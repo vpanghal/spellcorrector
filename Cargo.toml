@@ -1,0 +1,5 @@
+[package]
+
+name = "spell_corrector"
+version = "0.0.1"
+authors = ["Vijay Panghal <vijay.panghal@gmail.com>"]
