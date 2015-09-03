@@ -1,3 +1,7 @@
+[dependencies]
+regex = "0.1.41"
+regex_macros = "0.1.21"
+
 [package]
 
 name = "spell_corrector"
