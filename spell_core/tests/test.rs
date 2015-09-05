@@ -1,6 +1,6 @@
-extern crate spell_corrector;
+extern crate spell_core;
 
-use spell_corrector::NwordCorrector;
+use spell_core::NwordCorrector;
 
 #[test]
 fn test_correction() {

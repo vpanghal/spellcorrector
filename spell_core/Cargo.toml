@@ -1,0 +1,9 @@
+[dependencies]
+regex = "0.1.41"
+regex_macros = "0.1.21"
+
+
+[package]
+name = "spell_core"
+version = "0.1.0"
+authors = ["Vijay Panghal <vpanghal@maginatics.com>"]

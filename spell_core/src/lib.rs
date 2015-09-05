@@ -60,8 +60,8 @@ impl NwordCorrector {
         }
 
         match correction {
-            Some(word) => { return (*word).clone() }
-            None    => {}
+            Some(word)  => { return (*word).clone() }
+            None        => {}
         }
 
         // Find corrections with distance of 2
@@ -83,8 +83,8 @@ impl NwordCorrector {
         }
 
         match correction2 {
-            Some(word) => { return word }
-            None    => {}
+            Some(word)  => { return word }
+            None        => {}
         }
 
         // No corrections found
