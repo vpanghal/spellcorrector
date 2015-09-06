@@ -1,6 +1,10 @@
 [dependencies.spell_core]
 path = "spell_core"
 
+[dependencies]
+iron = "*"
+router = "*"
+
 [package]
 name = "spell_corrector"
 version = "0.0.1"

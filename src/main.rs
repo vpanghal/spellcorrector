@@ -1,10 +1,31 @@
 extern crate spell_core;
+extern crate iron;
+extern crate router;
 
-#[cfg(not(test))]
+use iron::status;
+use iron::{Iron, Request, Response, IronResult};
+use router::Router;
+use spell_core::NwordCorrector;
+use std::io::Read;
+use std::sync::{Arc, Mutex};
+
+fn say_pong(req: &mut Request) -> IronResult<Response> {
+    println!("Running ping handler, URL path: {}", req.url.path.join("/"));
+    Ok(Response::with((status::Ok, "Pong!")))
+}
+
+fn spell_check(request: &mut Request, corrector: &NwordCorrector) -> IronResult<Response> {
+    let mut payload = String::new();
+    request.body.read_to_string(&mut payload).unwrap();
+    println!("{}", payload);
+    Ok(Response::with((status::Ok, corrector.correct(payload))))
+}
+
 fn main() {
-    use std::env;
-    use spell_core::NwordCorrector;
-    let corrector = NwordCorrector::new();
-    let args : Vec<String> = env::args().collect();
-    println!("{} -> {}", args[1], corrector.correct(args[1].clone()));
+    let corrector = Arc::new(Mutex::new(NwordCorrector::new()));
+   
+    let mut router = Router::new();
+    router.get("/ping", say_pong);
+    router.post("/correct", move |r : &mut Request| spell_check(r, &corrector.lock().unwrap()));
+    Iron::new(router).http("127.0.0.1:3000").unwrap();
 }
