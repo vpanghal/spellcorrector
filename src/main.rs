@@ -28,6 +28,7 @@ fn main() {
     router.get("/ping", say_pong);
     router.post("/correct",
                 move |r: &mut Request| spell_check(r, &corrector.lock().unwrap()));
-    println!("Listening on port 3000");
+    println!("Listening on port 3000. Post word to correct on /correct endpoint e.g.");
+    println!("curl  -X POST -d 'Korrect' http://localhost:3000/correct");
     Iron::new(router).http("127.0.0.1:3000").unwrap();
 }
