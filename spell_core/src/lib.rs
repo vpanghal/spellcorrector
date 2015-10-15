@@ -26,10 +26,13 @@ impl SpellCorrector {
             Ok(f) => f,
         };
 
-        let re = Regex::new(r"\w+").unwrap();
+        let re = Regex::new(r"\w+").ok().expect("Failed to create Regex!");
         for line in BufReader::new(file).lines() {
-            for cap in re.captures_iter(&line.unwrap()) {
-                let counter = nwords.entry(String::from(cap.at(0).unwrap())).or_insert(0);
+            for cap in re.captures_iter(&line.ok().expect("Failed to match words!")) {
+                let counter = nwords.entry(String::from(cap.at(0)
+                                                           .expect("Failed to read matched \
+                                                                    word!")))
+                                    .or_insert(0);
                 *counter += 1;
             }
         }
