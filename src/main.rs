@@ -26,7 +26,8 @@ fn main() {
 
     let mut router = Router::new();
     router.get("/ping", say_pong);
-    router.post("/correct", move |r : &mut Request| spell_check(r, &corrector.lock().unwrap()));
+    router.post("/correct",
+                move |r: &mut Request| spell_check(r, &corrector.lock().unwrap()));
     println!("Listening on port 3000");
     Iron::new(router).http("127.0.0.1:3000").unwrap();
 }

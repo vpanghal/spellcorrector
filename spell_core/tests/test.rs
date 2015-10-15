@@ -12,6 +12,6 @@ fn test_correction() {
     check_equal("progression", "progresion", &corrector);
 }
 
-fn check_equal(correct : &str, given : &str, corrector : & NwordCorrector) {
+fn check_equal(correct: &str, given: &str, corrector: &NwordCorrector) {
     assert_eq!(correct.to_string(), corrector.correct(given.to_string()));
 }
