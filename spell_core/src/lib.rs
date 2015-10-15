@@ -10,22 +10,22 @@ use std::path::Path;
 use std::string::String;
 use regex::Regex;
 
-pub struct NwordCorrector {
+pub struct SpellCorrector {
     // Dictionary of words
     nwords : HashMap<String, isize>
 }
 
-impl NwordCorrector {
+impl SpellCorrector {
     // Create new instance.
-    pub fn new() -> NwordCorrector {
+    pub fn new() -> SpellCorrector {
         let mut nwords : HashMap<String, isize> =  HashMap::new();
-        
+
         let path = Path::new("big.txt");
         let file = match File::open("big.txt") {
             Err(why) => panic!("failed to open {}: {}", path.display(), why),
             Ok(f) => f,
         };
-       
+
         let re = Regex::new(r"\w+").unwrap();
         for line in BufReader::new(file).lines() {
             for cap in re.captures_iter(&line.unwrap()) {
@@ -34,10 +34,10 @@ impl NwordCorrector {
             }
         }
 
-        NwordCorrector { nwords : nwords}
+        SpellCorrector { nwords : nwords}
     }
 
-    // Correct the given word. 
+    // Correct the given word.
     pub fn correct(&self, word : String) -> String {
         // Word exist in dictionary, return
         if self.nwords.contains_key(&word) {
@@ -46,7 +46,7 @@ impl NwordCorrector {
 
         // Find corrections with distance of 1
         let mut known_edit1 = Vec::new();
-        NwordCorrector::edits(&word, &mut known_edit1);
+        SpellCorrector::edits(&word, &mut known_edit1);
         let mut word_count = 0;
         let mut correction : Option<&String> = None;
         for ke1 in &known_edit1 {
@@ -68,7 +68,7 @@ impl NwordCorrector {
         let mut correction2 : Option<String> = None;
         for ke1 in known_edit1.iter() {
             let mut known_edit2 = Vec::new();
-            NwordCorrector::edits(&ke1, &mut known_edit2);
+            SpellCorrector::edits(&ke1, &mut known_edit2);
             for ke2 in &known_edit2 {
                 if self.nwords.contains_key(ke2) {
                     let ke2_count = self.nwords[ke2];
@@ -100,8 +100,8 @@ impl NwordCorrector {
 
         // Transpose
         for i in 0..(len - 1) {
-            edits.push(format!("{}{}{}{}", &word[0..i], 
-                               &word[i+1..i+2], 
+            edits.push(format!("{}{}{}{}", &word[0..i],
+                               &word[i+1..i+2],
                                &word[i..i+1], &word[i+2..]));
         }
 
